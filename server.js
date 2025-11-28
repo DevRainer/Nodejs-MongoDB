@@ -65,6 +65,11 @@ app.listen(3000)
 
 
 
+//http://localhost:3000
+
+
+
+
 /*import express from 'express'
 import { PrismaClient } from '@prisma/client';  
 const prisma = new PrismaClient();
