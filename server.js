@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import { PrismaClient } from '@prisma/client';
-
+import pkg from '@prisma/client';
+const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
 
 const app = express()
@@ -38,7 +38,7 @@ app.put('/usuarios/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { name, email, age } = req.body;
-        const usuarioAtualizado = await prisma.user.update({
+        await prisma.user.update({
             where: { id },
             data: { name, email, age }
         });
@@ -51,14 +51,15 @@ app.put('/usuarios/:id', async (req, res) => {
 app.delete('/usuarios/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        await prisma.user.delete({
-            where: { id }
+        const user = await prisma.user.delete({
+            where: { id: String(id) }
         });
         res.status(200).json({ message: "Usuário removido com sucesso!" });
     } catch (error) {
         res.status(500).json({ error: "Erro ao remover usuário." });
     }
 });
+
 
 app.listen(3000)
 
