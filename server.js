@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import pkg from '@prisma/client';
-const { PrismaClient } = pkg;
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const app = express()
@@ -38,11 +38,11 @@ app.put('/usuarios/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { name, email, age } = req.body;
-        await prisma.user.update({
+        const usuarioAtualizado = await prisma.user.update({
             where: { id },
             data: { name, email, age }
         });
-        res.status(200).json(usuarioAtualizado);
+        res.status(200).json({ message: "Usuário atualizado com sucesso!", usuario: usuarioAtualizado });
     } catch (error) {
         res.status(500).json({ error: "Erro ao atualizar usuário." });
     }
